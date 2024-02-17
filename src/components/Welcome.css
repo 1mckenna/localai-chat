@@ -1,0 +1,44 @@
+.ant-typography {
+    color: var(--text-color);
+    display: flex;
+    justify-content: center;
+    align-content: space-between;
+}
+
+.link {
+    color: var(--dracaccent-color) !important;
+  }
+  
+.goto-btn {
+    display: flex;
+    justify-content: center;
+    align-content: space-between;
+}
+
+.li {
+    color: var(--text-color);
+}
+
+.ol {
+    color: var(--text-color);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+.ol li {
+    color: var(--dracaccent-color) !important;
+    font-weight: bold;
+}
+
+.goto-btn .ant-btn {
+    color: var(--text-color) !important;
+    background-color: var(--primary-color) !important;
+    border-color: var(--text-color) !important;
+}
+
+.goto-btn .ant-btn:hover {
+    color: var(--dracaccent-color) !important;
+    border: 1px solid var(--dracaccent-color) !important;
+    font-weight: bolder;
+}

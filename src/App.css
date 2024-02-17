@@ -1,0 +1,83 @@
+/* App.css */
+
+:root {
+  --primary-color-light: #a9aaaf;
+  --primary-color-dark: #282a36;
+  --primary-color: var(--primary-color-dark);
+  --text-color-light: black;
+  --text-color-dark: #50fa7b;
+  --text-color: var(--text-color-dark);
+  --dracaccent-color-light: #61dafb;
+  --dracaccent-color-dark: #ff79c6;
+  --dracaccent-color: var(--dracaccent-color-dark);
+  --inverted-dracaccent-color: var(--dracaccent-color-dark);
+}
+
+.App.light {
+  --primary-color: var(--primary-color-light);
+  --text-color: var(--text-color-light);
+  --dracaccent-color: var(--dracaccent-color-light);
+  --inverted-dracaccent-color: var(--dracaccent-color-dark);
+}
+
+.App.light Header {
+  background-color: var(--primary-color-light);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.App.light .App-link {
+  color: #50fa7b;
+}
+
+.App.dark {
+  --primary-color: var(--primary-color-dark);
+  --text-color: var(--text-color-dark);
+  --dracaccent-color: var(--dracaccent-color-dark);
+  --inverted-dracaccent-color: var(--dracaccent-color-light);
+}
+
+.App.dark Header {
+  background-color: var(--primary-color-dark);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.App-link {
+  color: #bd93f9;
+}
+
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+      animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+@keyframes App-logo-spin {
+  from {
+      transform: rotate(0deg);
+  }
+
+  to {
+      transform: rotate(360deg);
+  }
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+      'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+      sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: var(--primary-color);
+  color: var(--primary-color);
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+      monospace;
+}

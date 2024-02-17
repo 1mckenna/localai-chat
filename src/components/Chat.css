@@ -1,0 +1,101 @@
+.ant-layout-content {
+    background: var(--primary-color);
+}
+
+/* Main container */
+.Chat {
+    color: var(--text-color);
+  }
+  
+.anticon {
+    background-color: transparent;
+}
+
+.ant-empty-image {
+    color: var(--text-color) !important;
+}
+
+.ant-card,
+.ant-card-head {
+  color: var(--text-color) !important;
+  background-color: transparent !important;
+  border: 1px solid var(--text-color) !important;
+  .anticon-robot {
+      color: var(--inverted-dracaccent-color) !important;
+  }
+}
+
+.ant-input-data-count {
+  color: var(--dracaccent-color) !important;
+}
+
+.ant-card-body p span{
+  color: var(--dracaccent-color) !important;
+  font-weight: bolder;
+}
+
+.prompt-input,
+.msg-input,
+.msg-input::placeholder {
+  color: var(--text-color) !important;
+  background-color: transparent !important;
+  border-color: var(--text-color) !important;
+}
+
+.msg-input:hover,
+.prompt-input:hover {
+  border-color: var(--dracaccent-color) !important;
+}
+
+/* Spin styles */
+.ant-spin {
+  color: var(--dracaccent-color) !important;
+}
+
+.ant-spin-dot-item {
+  background-color: var(--dracaccent-color) !important;
+}
+
+/* Markdown styles */
+.ant-typography code {
+  color: var(--text-color) !important;
+}
+
+/* Syntax Highlighter styles */
+.react-syntax-highlighter-line-number {
+  color: var(--text-color) !important;
+}
+
+.send-btn {
+  color: var(--text-color) !important;
+  background-color: var(--primary-color) !important;
+  border-color: var(--text-color) !important;
+}
+
+.send-btn:hover {
+  color: var(--dracaccent-color) !important;
+  border: 1px solid var(--dracaccent-color) !important;
+  font-weight: bolder;
+}
+
+.chatbot-response {
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  padding: 10px;
+  background-color: var(--primary-color-light) !important;
+  color: black;
+
+}
+
+.chatbot-empty-response {
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  padding: 10px;
+  background-color: transparent !important;
+  color: black;
+
+}
