@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import axios from 'axios';
-import { Layout, Divider, Input, Button, Card, Flex, Spin } from 'antd';
+import { Layout, Divider, Input, Button, Card, Spin } from 'antd';
 import Markdown from 'react-markdown';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { dark } from 'react-syntax-highlighter/dist/esm/styles/prism';
@@ -14,6 +14,11 @@ const { TextArea } = Input;
 const ChatInterface = ({ selectedModel }) => {
   const { theme } = useContext(ThemeContext);
   const [messages, setMessages] = useState([]);
+  const [conversationHistory, setConversationHistory] = useState(() => {
+    // Retrieve conversation history from localStorage on component mount
+    const savedHistory = localStorage.getItem('conversationHistory');
+    return savedHistory ? JSON.parse(savedHistory) : [];
+  });
   const [newMessage, setNewMessage] = useState('');
   const [newPrompt, setNewPrompt] = useState(() => {
     // Retrieve prompt from localStorage on component mount
@@ -21,17 +26,26 @@ const ChatInterface = ({ selectedModel }) => {
   });
   const [loading, setLoading] = useState(false);
   const serverUrl = process.env.REACT_APP_SERVER_URL || 'http://api:8080';
-  const [lastPrompt, setLastPrommpt] = useState('');
+  const [lastPrompt, setLastPrompt] = useState('');
 
   useEffect(() => {
     // Save prompt to localStorage whenever it changes
     localStorage.setItem('prompt', newPrompt);
   }, [newPrompt]);
 
+  useEffect(() => {
+    // Save conversation history to localStorage whenever it changes
+    localStorage.setItem('conversationHistory', JSON.stringify(conversationHistory));
+  }, [conversationHistory]);
+
   const sendMessage = async () => {
     try {
       setLoading(true);
-      setLastPrommpt(newMessage);
+      setLastPrompt(newMessage);
+      const updatedHistory = [
+        ...conversationHistory,
+        { role: 'user', content: newMessage },
+      ];
       await axios
         .post(
           `${serverUrl}/v1/chat/completions`,
@@ -39,16 +53,20 @@ const ChatInterface = ({ selectedModel }) => {
             model: selectedModel?.id || 'default-model-id',
             messages: [
               { role: 'system', content: newPrompt },
-              { role: 'user', content: newMessage },
+              ...updatedHistory,
             ],
             stream: false,
           },
           {
-            'Content-Type': 'application/json',
+            headers: {
+              'Content-Type': 'application/json',
+            },
           }
         )
         .then(function (response) {
-          setMessages(response.data.choices[0].message);
+          const assistantMessage = response.data.choices[0].message;
+          setConversationHistory([...updatedHistory, assistantMessage]);
+          setMessages(assistantMessage);
           setNewMessage('');
         })
         .catch(function (error) {
@@ -62,13 +80,16 @@ const ChatInterface = ({ selectedModel }) => {
     }
   };
 
+  const clearConversationHistory = () => {
+    setConversationHistory([]);
+    localStorage.removeItem('conversationHistory');
+  };
+
   return (
     <div style={{ color: 'var(--primary-color)' }}>
       <Layout>
         <Content style={{ padding: '20px' }}>
-          <Flex align="center" gap="middle">
-            <Spin spinning={loading} fullscreen size="large" />
-          </Flex>
+          <Spin spinning={loading} size="large" />
           <Card title="Current Model">
             {selectedModel ? (
               <div>
@@ -81,7 +102,7 @@ const ChatInterface = ({ selectedModel }) => {
               <p>No model selected</p>
             )}
           </Card>
-          <Divider></Divider>
+          <Divider />
           <Card title="Prompt">
             <TextArea
               showCount
@@ -91,41 +112,42 @@ const ChatInterface = ({ selectedModel }) => {
               onChange={(e) => setNewPrompt(e.target.value)}
             />
           </Card>
-          <Divider></Divider>
+          <Divider />
           <Card title="Conversation">
-            <div>
-              <b>
-                <UserOutlined style={{ fontSize: '24px', color: 'blue', paddingTop: '20px' }} /> Human:
-              </b>
-            </div>
-            {lastPrompt}
-            <div>
-              <b>
-                <RobotOutlined style={{ fontSize: '24px', color: 'red', paddingTop: '20px' }} /> Assistant:
-              </b>
-            </div>
-            <div className={messages.content ? 'chatbot-response' : 'chatbot-empty-response'}>
-              <Markdown
-                components={{
-                  code({ node, inline, className, children, ...props }) {
-                    const match = /language-(\w+)/.exec(className || '');
-                    return !inline && match ? (
-                      <SyntaxHighlighter {...props} language={match[1]} style={dark} PreTag="div">
-                        {String(children).replace(/\n$/, '')}
-                      </SyntaxHighlighter>
-                    ) : (
-                      <code className={className} {...props}>
-                        {children}
-                      </code>
-                    );
-                  },
-                }}
-              >
-                {messages.content}
-              </Markdown>
-            </div>
+            {conversationHistory.map((msg, index) => (
+              <div key={index} className="chat-message">
+                <b>
+                  {msg.role === 'user' ? (
+                    <UserOutlined style={{ fontSize: '24px', color: 'blue', paddingTop: '20px' }} />
+                  ) : (
+                    <RobotOutlined style={{ fontSize: '24px', color: 'red', paddingTop: '20px' }} />
+                  )}
+                  {msg.role === 'user' ? ' Human: ' : ' Assistant: '}
+                </b>
+                <div className={msg.role === 'user' ? 'user-message' : 'assistant-message'}>
+                  <Markdown
+                    components={{
+                      code({ node, inline, className, children, ...props }) {
+                        const match = /language-(\w+)/.exec(className || '');
+                        return !inline && match ? (
+                          <SyntaxHighlighter {...props} language={match[1]} style={dark} PreTag="div">
+                            {String(children).replace(/\n$/, '')}
+                          </SyntaxHighlighter>
+                        ) : (
+                          <code className={className} {...props}>
+                            {children}
+                          </code>
+                        );
+                      },
+                    }}
+                  >
+                    {msg.content}
+                  </Markdown>
+                </div>
+              </div>
+            ))}
           </Card>
-          <Divider></Divider>
+          <Divider />
           <div style={{ marginTop: '20px' }}>
             <TextArea
               showCount
@@ -135,8 +157,22 @@ const ChatInterface = ({ selectedModel }) => {
               value={newMessage}
               onChange={(e) => setNewMessage(e.target.value)}
             />
-            <Button className="send-btn" disabled={loading || !selectedModel} type="primary" style={{ marginTop: '10px' }} onClick={sendMessage}>
+            <Button
+              className="send-btn"
+              disabled={loading || !selectedModel}
+              type="primary"
+              style={{ marginTop: '10px' }}
+              onClick={sendMessage}
+            >
               {!selectedModel ? 'YOU MUST SELECT A MODEL FIRST' : 'Send'}
+            </Button>
+            <Button
+              className="clear-btn"
+              type="danger"
+              style={{ marginTop: '10px', marginLeft: '10px' }}
+              onClick={clearConversationHistory}
+            >
+              Clear Conversation
             </Button>
           </div>
         </Content>

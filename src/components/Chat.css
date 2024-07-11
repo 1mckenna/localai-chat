@@ -1,18 +1,18 @@
+/* General styles */
 .ant-layout-content {
-    background: var(--primary-color);
+  background: var(--primary-color);
 }
 
-/* Main container */
 .Chat {
-    color: var(--text-color);
-  }
-  
+  color: var(--text-color);
+}
+
 .anticon {
-    background-color: transparent;
+  background-color: transparent;
 }
 
 .ant-empty-image {
-    color: var(--text-color) !important;
+  color: var(--text-color) !important;
 }
 
 .ant-card,
@@ -20,16 +20,17 @@
   color: var(--text-color) !important;
   background-color: transparent !important;
   border: 1px solid var(--text-color) !important;
-  .anticon-robot {
-      color: var(--inverted-dracaccent-color) !important;
-  }
+}
+
+.anticon-robot {
+  color: var(--inverted-dracaccent-color) !important;
 }
 
 .ant-input-data-count {
   color: var(--dracaccent-color) !important;
 }
 
-.ant-card-body p span{
+.ant-card-body p span {
   color: var(--dracaccent-color) !important;
   font-weight: bolder;
 }
@@ -78,24 +79,60 @@
   font-weight: bolder;
 }
 
+.clear-btn {
+  color: var(--text-color) !important;
+  background-color: var(--primary-color) !important;
+  border-color: var(--text-color) !important;
+}
+
+.clear-btn:hover {
+  color: var(--dracaccent-color) !important;
+  border: 1px solid var(--dracaccent-color) !important;
+  font-weight: bolder;
+}
+
 .chatbot-response {
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
-  border-bottom-left-radius: 10px;
-  border-bottom-right-radius: 10px;
+  border-radius: 10px;
   padding: 10px;
   background-color: var(--primary-color-light) !important;
   color: black;
-
 }
 
 .chatbot-empty-response {
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
-  border-bottom-left-radius: 10px;
-  border-bottom-right-radius: 10px;
+  border-radius: 10px;
   padding: 10px;
   background-color: transparent !important;
   color: black;
+}
 
+/* Responsive styles for mobile devices */
+@media (max-width: 768px) {
+  .ant-layout-content {
+    padding: 10px;
+  }
+
+  .ant-card {
+    margin-bottom: 10px;
+  }
+
+  .prompt-input,
+  .msg-input {
+    font-size: 14px;
+  }
+
+  .send-btn,
+  .clear-btn {
+    width: 100%;
+    margin-top: 10px;
+    font-size: 14px;
+  }
+
+  .chatbot-response,
+  .chatbot-empty-response {
+    font-size: 14px;
+  }
+
+  .chat-message {
+    margin-bottom: 10px;
+  }
 }

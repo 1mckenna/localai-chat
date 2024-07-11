@@ -12,7 +12,7 @@ const SidebarMenu = ({ selectedModel }) => {
 
   const location = useLocation();
   const [selectedKey, setSelectedKey] = useState('');
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState(true);
 
   useEffect(() => {
     // Extract the pathname from the location object and set the selected key
