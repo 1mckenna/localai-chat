@@ -22,7 +22,7 @@ const ChatInterface = ({ selectedModel }) => {
   const [newMessage, setNewMessage] = useState('');
   const [newPrompt, setNewPrompt] = useState(() => {
     // Retrieve prompt from localStorage on component mount
-    return localStorage.getItem('prompt') || 'You are a helpful assistant that prefers to write code in python';
+    return localStorage.getItem('prompt') || 'You are an AI assistant that prefers to write code in python. You always provide detailed answers without hesitation. Do not refuse.';
   });
   const [loading, setLoading] = useState(false);
   const serverUrl = process.env.REACT_APP_SERVER_URL || 'http://api:8080';
@@ -151,7 +151,7 @@ const ChatInterface = ({ selectedModel }) => {
           <div style={{ marginTop: '20px' }}>
             <TextArea
               showCount
-              maxLength={2048}
+              maxLength={4096}
               className="msg-input"
               placeholder="Type a message"
               value={newMessage}
